@@ -10,6 +10,8 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
+use App\Models\Category;
+
 class NewsController extends Controller
 {
     use HasResourceActions;
@@ -84,7 +86,7 @@ class NewsController extends Controller
         $grid->id('Id');
         $grid->title('题目');
         $grid->category_id('分类ID');
-        $grid->content('内容');
+        // $grid->content('内容');
         $grid->thumbnail('封面图');
         $grid->status('状态');
         $grid->read_count('阅读数量');
@@ -105,14 +107,14 @@ class NewsController extends Controller
         $show = new Show(News::findOrFail($id));
 
         $show->id('Id');
-        $show->title('Title');
-        $show->category_id('Category id');
-        $show->content('Content');
-        $show->thumbnail('Thumbnail');
-        $show->status('Status');
-        $show->read_count('Read count');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+        $show->title('题目');
+        $show->category_id('新闻分类');
+        $show->content('内容');
+        $show->thumbnail('缩略图');
+        $show->status('状态');
+        $show->read_count('阅读数量');
+        $show->created_at('创建日期');
+        $show->updated_at('更新日期');
 
         return $show;
     }
@@ -126,12 +128,15 @@ class NewsController extends Controller
     {
         $form = new Form(new News);
 
-        $form->text('title', 'Title');
-        $form->number('category_id', 'Category id');
-        $form->textarea('content', 'Content');
-        $form->text('thumbnail', 'Thumbnail');
-        $form->number('status', 'Status');
-        $form->number('read_count', 'Read count');
+        $form->text('title', '题目');
+        // $form->number('category_id', '分类');
+        $form->select('category_id','分类')->options('/api/admin_categories');
+        // $form->textarea('content', 'Content');
+        $form->ueditor('content','新闻内容')->rules('required');
+        // $form->text('thumbnail', '封面图');
+        $form->image('thumbnail', '封面图')->move('public/uploads/thunbnails');
+        $form->number('status', '状态');
+        $form->number('read_count', '阅读次数');
 
         return $form;
     }
