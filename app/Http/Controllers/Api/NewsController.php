@@ -47,4 +47,7 @@ class NewsController extends Controller
     }
 
 
+    //ceshi kanxia gti nengbunengyong 
+
+
 }
